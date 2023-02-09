@@ -1,0 +1,26 @@
+repos:
+  - repo: https://github.com/terraform-docs/terraform-docs
+    rev: v0.16.0 # Same as in bitbucket-pipelines.yml
+    hooks:
+      - id: terraform-docs-go
+        alias: terraform-docs
+        args: # Same as in bitbucket-pipelines.yml
+          - .
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.76.0
+    hooks:
+      - id: terraform_fmt
+        alias: terraform-fmt
+        args: # Same as in bitbucket-pipelines.yml
+          - --args=-no-color
+          - --args=-write=true
+  - repo: https://github.com/Lucas-C/pre-commit-hooks-nodejs
+    rev: v1.1.2
+    hooks:
+      - id: markdown-toc
+        # See also https://github.com/jonschlinkert/markdown-toc/blob/master/.verb.md
+        args:
+          - README.md
+          - -i
+          - --indent
+          - "    "

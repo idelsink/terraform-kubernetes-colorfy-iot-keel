@@ -1,0 +1,37 @@
+formatter: markdown
+
+settings:
+  escape: true
+  indent: 3
+
+output:
+  file: README.md
+  mode: inject
+  template: |-
+    <!-- BEGIN_TF_DOCS -->
+    {{ .Content }}
+    <!-- END_TF_DOCS -->
+
+
+content: |-
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Inputs }}
+
+  {{ .Modules }}
+
+  {{ .Resources }}
+
+  {{ .Outputs }}
+
+  ## Examples
+
+  Here are some examples on how to use this module.
+
+  ### Simple example
+
+  ```hcl
+  {{ include "examples/simple.tf" }}
+  ```
