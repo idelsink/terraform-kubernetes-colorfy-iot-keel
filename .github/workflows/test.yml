@@ -1,0 +1,41 @@
+name: Test and validate
+
+on:
+  push:
+    branches:
+      - '**' # All branches
+
+jobs:
+  terraform-docs:
+    name: Test Terraform Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Validate README.md using terraform-docs
+        uses: terraform-docs/gh-actions@v1
+        with:
+          config-file: .terraform-docs.yml
+          fail-on-diff: true
+          working-dir: .
+
+  terraform:
+    name: Test Terraform
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -write=false -recursive -check -diff
+
+  readme-toc:
+    name: Test README TOC
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/* # Latest LTS version
+      - run: npm install --global markdown-toc@1.2.0
+      - run: markdown-toc README.md -i --indent "    " # Same arguments in .pre-commit-config.yaml
+      - run: git diff --exit-code
